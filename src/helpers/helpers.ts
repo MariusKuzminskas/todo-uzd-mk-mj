@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { TodoType } from '../types/types';
 
 // axios.defaults.baseURL = import.meta.env.VITE_dummy_todos_url as string;
 
@@ -12,7 +13,7 @@ type ApiDataResponseType<T> = Promise<SuccessResponseType<T> | ErrorResponseType
 export const apiData = <T>(
   url: string,
   action: actionType = 'get',
-  dataToSend: any = {},
+  dataToSend: TodoType | object = {},
 ): ApiDataResponseType<T> => {
   return axios[action](url, dataToSend)
     .then((response) => {

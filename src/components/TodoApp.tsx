@@ -11,10 +11,19 @@ import Wrap from './UI/Wrap';
 
 const url: string = import.meta.env.VITE_dummy_todos_url || 'https://dummyjson.com/todos';
 
+/*
+A todo app that show 5(or nr of your choise) todos. You can add, delete and toggle todos.
+You can also filter and sort the todos.
+All the app is split into components.
+Stylig is done with tailwindcss.
+Procject is using Vite as a bundler and TypeScript as a language.
+*/
+
 const TodoApp = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
   const [statusFilter, setStatusFilter] = useState('all');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [sortBy, setSortBy] = useState<'doneUndone' | 'title' | ''>('');
@@ -32,7 +41,7 @@ const TodoApp = () => {
       }
     };
 
-    fetchTodos(url + '?limit=10');
+    fetchTodos(url + '?limit=5');
   }, []);
 
   const handleAddTodo = async (newTodo: string) => {
@@ -56,7 +65,7 @@ const TodoApp = () => {
   const handleDeleteTodo = async (id: number) => {
     setError(null);
     setLoading(true);
-    const [result, error] = await apiData<TodoType>(`${url}/${id}`, 'delete');
+    const [, error] = await apiData<TodoType>(`${url}/${id}`, 'delete');
     if (error) {
       console.log('error ===', error);
       setError(error);
@@ -70,7 +79,7 @@ const TodoApp = () => {
   const handleToggleTodo = async (id: number) => {
     setError(null);
     setLoading(true);
-    const [result, error] = await apiData<TodoType>(`${url}/${id}`, 'put', {
+    const [, error] = await apiData<TodoType>(`${url}/${id}`, 'put', {
       completed: !todos.find((item) => item.id === id)?.completed,
     });
     if (error) {
@@ -84,7 +93,7 @@ const TodoApp = () => {
     setLoading(false);
   };
 
-  let filteredTodos = todos;
+  let filteredTodos = [];
   switch (statusFilter) {
     case 'all':
       filteredTodos = todos;
@@ -99,7 +108,7 @@ const TodoApp = () => {
       filteredTodos = todos;
   }
 
-  let orderedTodos = filteredTodos;
+  let orderedTodos = [];
 
   switch (sortBy) {
     case 'doneUndone':
@@ -124,8 +133,6 @@ const TodoApp = () => {
       orderedTodos = filteredTodos;
   }
 
-  console.log('filteredTodos ===', filteredTodos);
-
   return (
     <Wrap>
       <TodoHeader todos={todos} />
@@ -138,14 +145,19 @@ const TodoApp = () => {
         <h1 className='text-2xl font-semibold '>TodoApp</h1>
         <AddTodoForm onAddTodo={handleAddTodo} />
 
-        <TodoFilters
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          order={order}
-          setOrder={setOrder}
-          status={statusFilter}
-          setStatus={setStatusFilter}
-        />
+        <button className='underline' onClick={() => setShowFilters(!showFilters)}>
+          {showFilters ? 'Hide' : 'Show'} filters
+        </button>
+        {showFilters && (
+          <TodoFilters
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            order={order}
+            setOrder={setOrder}
+            status={statusFilter}
+            setStatus={setStatusFilter}
+          />
+        )}
         <div className='relative'>
           <Loading show={loading} />
 
