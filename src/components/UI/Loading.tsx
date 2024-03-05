@@ -7,9 +7,9 @@ type LoadingProps = {
 const Loading = ({ show }: LoadingProps) => {
   if (show) {
     return (
-      <div className='relative  w-100 h-100'>
+      <div className='absolute inset-0 bg-slate-200/25 cursor-wait'>
         <div className='flex items-center justify-center '>
-          <div className='bg-gray-200 p-5 rounded-lg'>
+          <div className='bg-gray-200 p-5 rounded-lg mt-10'>
             <div className='animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-gray-900'></div>
             <div className='mt-4 text-gray-900'>Loading...</div>
           </div>
