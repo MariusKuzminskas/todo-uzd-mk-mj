@@ -6,6 +6,8 @@ import axios from 'axios';
 import { apiData } from '../helpers/helpers';
 import Loading from './UI/Loading';
 import TodoHeader from './TodoHeader';
+import TodoFilters from './TodoFilters';
+import Wrap from './UI/Wrap';
 
 const url: string = import.meta.env.VITE_dummy_todos_url || 'https://dummyjson.com/todos';
 
@@ -80,7 +82,7 @@ const TodoApp = () => {
   };
 
   return (
-    <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  md:w-[500px] mx-auto min-h-96'>
+    <Wrap>
       <TodoHeader todos={todos} />
       <div className='px-5 py-3'>
         {error && (
@@ -91,23 +93,23 @@ const TodoApp = () => {
         <h1 className='text-2xl font-semibold '>TodoApp</h1>
         <AddTodoForm onAddTodo={handleAddTodo} />
 
+        <TodoFilters />
         <div className='relative'>
           <Loading show={loading} />
-          <div className='mt-5'>
-            <ul>
-              {todos.map((tItem) => (
-                <SingleTodo
-                  key={tItem.id}
-                  item={tItem}
-                  onComplete={() => handleToggleTodo(tItem.id)}
-                  onDelete={() => handleDeleteTodo(tItem.id)}
-                />
-              ))}
-            </ul>
-          </div>
+
+          <ul className='mt-5'>
+            {todos.map((tItem) => (
+              <SingleTodo
+                key={tItem.id}
+                item={tItem}
+                onComplete={() => handleToggleTodo(tItem.id)}
+                onDelete={() => handleDeleteTodo(tItem.id)}
+              />
+            ))}
+          </ul>
         </div>
       </div>
-    </div>
+    </Wrap>
   );
 };
 
