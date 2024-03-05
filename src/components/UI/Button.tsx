@@ -7,7 +7,9 @@ type ButtonProps = React.HTMLProps<HTMLButtonElement> & {
 const Button = ({ className, onClick, children }: ButtonProps) => {
   return (
     <button
-      className={`bg-slate-500 text-white px-3 py-1 rounded-md ${className}`}
+      className={`text-white border px-3 py-1 rounded-md ${
+        className?.includes('bg-') ? className : 'bg-slate-400'
+      }`}
       onClick={onClick}>
       {children}
     </button>
