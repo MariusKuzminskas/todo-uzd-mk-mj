@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-
 import { ApiResponseType, TodoType } from '../types/types';
 import AddTodoForm from './AddTodoForm';
 import SingleTodo from './SingleTodo';
 import axios from 'axios';
 import { apiData } from '../helpers/helpers';
 import Loading from './UI/Loading';
-import bgImage from '../assets/bg.jpg';
-import TimeNow from './UI/TimeNow';
+import TodoHeader from './TodoHeader';
 
 const url: string = import.meta.env.VITE_dummy_todos_url || 'https://dummyjson.com/todos';
 
@@ -31,8 +29,6 @@ const TodoApp = () => {
 
     fetchTodos(url + '?limit=10');
   }, []);
-
-  // console.table(todos);
 
   const handleAddTodo = async (newTodo: string) => {
     setError(null);
@@ -83,20 +79,9 @@ const TodoApp = () => {
     setLoading(false);
   };
 
-  const totalTodos = todos.length;
-  const completedTodos = todos.filter((item) => item.completed).length;
-
   return (
     <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  w-[500px] mx-auto min-h-96'>
-      <header className='relative'>
-        <img className='h-52 w-full object-cover object-bottom' src={bgImage} alt='Todo header' />
-        <div className='absolute right-10 bottom-5 bg-slate-200/25 text-2xl'>
-          {completedTodos}/{totalTodos}
-        </div>
-        <div className='absolute left-10 bottom-5 bg-slate-200/25 text-2xl'>
-          <TimeNow />
-        </div>
-      </header>
+      <TodoHeader todos={todos} />
       <div className='px-5 py-3'>
         {error && (
           <p className='text-red-500 bg-red-50 border border-red-300 py-3 rounded-md text-center '>
