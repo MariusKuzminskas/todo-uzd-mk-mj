@@ -16,6 +16,8 @@ const TodoApp = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [sortBy, setSortBy] = useState<'doneUndone' | 'title' | ''>('');
 
   useEffect(() => {
     const fetchTodos = async (from: string) => {
@@ -97,6 +99,31 @@ const TodoApp = () => {
       filteredTodos = todos;
   }
 
+  let orderedTodos = filteredTodos;
+
+  switch (sortBy) {
+    case 'doneUndone':
+      orderedTodos = filteredTodos.sort((a, b) => {
+        if (order === 'asc') {
+          return a.completed === b.completed ? 0 : a.completed ? 1 : -1;
+        } else {
+          return a.completed === b.completed ? 0 : a.completed ? -1 : 1;
+        }
+      });
+      break;
+    case 'title':
+      orderedTodos = filteredTodos.sort((a, b) => {
+        if (order === 'asc') {
+          return a.todo.localeCompare(b.todo);
+        } else {
+          return b.todo.localeCompare(a.todo);
+        }
+      });
+      break;
+    default:
+      orderedTodos = filteredTodos;
+  }
+
   console.log('filteredTodos ===', filteredTodos);
 
   return (
@@ -111,12 +138,19 @@ const TodoApp = () => {
         <h1 className='text-2xl font-semibold '>TodoApp</h1>
         <AddTodoForm onAddTodo={handleAddTodo} />
 
-        <TodoFilters status={statusFilter} setStatus={setStatusFilter} />
+        <TodoFilters
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          order={order}
+          setOrder={setOrder}
+          status={statusFilter}
+          setStatus={setStatusFilter}
+        />
         <div className='relative'>
           <Loading show={loading} />
 
           <ul className='mt-5'>
-            {filteredTodos.map((tItem) => (
+            {orderedTodos.map((tItem) => (
               <SingleTodo
                 key={tItem.id}
                 item={tItem}
