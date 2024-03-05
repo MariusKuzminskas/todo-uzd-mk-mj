@@ -15,7 +15,7 @@ const TodoFilters = ({
   setOrder,
   setSortBy,
 }: TodoFiltersProps) => {
-  console.log('status ===', status);
+  // console.log('status ===', status);
 
   return (
     <div className='mt-2 border rounded-lg border-slate-400 p-3'>

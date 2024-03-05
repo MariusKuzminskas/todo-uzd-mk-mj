@@ -47,7 +47,7 @@ const TodoApp = () => {
   const handleAddTodo = async (newTodo: string) => {
     setError(null);
     setLoading(true);
-    console.log('newTodo ===', newTodo);
+    // console.log('newTodo ===', newTodo);
     const [result, error] = await apiData<TodoType>(url + '/add', 'post', {
       todo: newTodo,
       completed: false,

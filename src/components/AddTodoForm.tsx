@@ -11,7 +11,6 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('newTodoVal ===', newTodoVal);
     if (!validateTodo(newTodoVal)) {
       return;
     }
