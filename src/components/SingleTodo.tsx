@@ -20,7 +20,6 @@ const SingleTodo = ({ item, onDelete, onComplete }: SingleTodoProps) => {
         {item.todo}
       </label>
       <div>
-        <Button>Edit</Button>
         <Button onClick={onDelete} className='bg-red-400'>
           Delete
         </Button>
