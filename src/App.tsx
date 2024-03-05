@@ -1,9 +1,12 @@
 //
 
+import TodoApp from './components/TodoApp';
+
 function App() {
   return (
-    <div className='container'>
-      <h1 className='text-5xl font-medium underline'>TodoApp</h1>
+    <div className='container min-h-screen border-[1px]'>
+      <h1 className='text-2xl font-medium underline mb-10 text-slate-600'>MK uzduotis</h1>
+      <TodoApp />
     </div>
   );
 }
