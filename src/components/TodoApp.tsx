@@ -7,6 +7,7 @@ import axios from 'axios';
 import { apiData } from '../helpers/helpers';
 import Loading from './UI/Loading';
 import bgImage from '../assets/bg.jpg';
+import TimeNow from './UI/TimeNow';
 
 const url: string = import.meta.env.VITE_dummy_todos_url || 'https://dummyjson.com/todos';
 
@@ -91,6 +92,9 @@ const TodoApp = () => {
         <img className='h-52 w-full object-cover object-bottom' src={bgImage} alt='Todo header' />
         <div className='absolute right-10 bottom-5 bg-slate-200/25 text-2xl'>
           {completedTodos}/{totalTodos}
+        </div>
+        <div className='absolute left-10 bottom-5 bg-slate-200/25 text-2xl'>
+          <TimeNow />
         </div>
       </header>
       <div className='px-5 py-3'>
