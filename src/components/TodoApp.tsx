@@ -29,9 +29,23 @@ const TodoApp = () => {
     fetchTodos(url + '?limit=10');
   }, []);
 
-  console.table(todos);
+  // console.table(todos);
 
-  const handleAddTodo = (newTodo: string) => {};
+  const handleAddTodo = (newTodo: string) => {
+    setError(null);
+    console.log('newTodo ===', newTodo);
+    axios
+      .post(url + '/add', { todo: newTodo, completed: false, userId: 11 })
+      .then((response) => {
+        console.log('response ===', response.data);
+        setTodos((prev) => [response.data, ...prev]);
+      })
+      .catch((error) => {
+        console.log('error handleAddTodo ===', error);
+        console.log('error.response ===', error.response.data.message);
+        setError(new Error(error.response.data.message));
+      });
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -45,7 +59,7 @@ const TodoApp = () => {
         </p>
       )}
       <h1 className='text-2xl font-semibold '>TodoApp</h1>
-      <AddTodoForm onAddTodo={() => {}} />
+      <AddTodoForm onAddTodo={handleAddTodo} />
 
       <div className='mt-5'>
         <ul>
