@@ -82,9 +82,17 @@ const TodoApp = () => {
     setLoading(false);
   };
 
+  const totalTodos = todos.length;
+  const completedTodos = todos.filter((item) => item.completed).length;
+
   return (
     <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  w-[500px] mx-auto min-h-96'>
-      <img className='h-52 w-full object-cover object-bottom' src={bgImage} alt='Todo header' />
+      <header className='relative'>
+        <img className='h-52 w-full object-cover object-bottom' src={bgImage} alt='Todo header' />
+        <div className='absolute right-10 bottom-5 bg-slate-200/25 text-2xl'>
+          {completedTodos}/{totalTodos}
+        </div>
+      </header>
       <div className='px-5 py-3'>
         {error && (
           <p className='text-red-500 bg-red-50 border border-red-300 py-3 rounded-md text-center '>
