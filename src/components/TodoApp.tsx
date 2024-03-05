@@ -65,6 +65,23 @@ const TodoApp = () => {
     setLoading(false);
   };
 
+  const handleToggleTodo = async (id: number) => {
+    setError(null);
+    setLoading(true);
+    const [result, error] = await apiData<TodoType>(`${url}/${id}`, 'put', {
+      completed: !todos.find((item) => item.id === id)?.completed,
+    });
+    if (error) {
+      setError(error);
+      setLoading(false);
+      return;
+    }
+    setTodos((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, completed: !item.completed } : item)),
+    );
+    setLoading(false);
+  };
+
   return (
     <div className='border border-slate-400 rounded-md px-5 py-3 w-[500px] mx-auto min-h-96'>
       {error && (
@@ -80,7 +97,12 @@ const TodoApp = () => {
       <div className='mt-5'>
         <ul>
           {todos.map((tItem) => (
-            <SingleTodo key={tItem.id} item={tItem} onDelete={() => handleDeleteTodo(tItem.id)} />
+            <SingleTodo
+              key={tItem.id}
+              item={tItem}
+              onComplete={() => handleToggleTodo(tItem.id)}
+              onDelete={() => handleDeleteTodo(tItem.id)}
+            />
           ))}
         </ul>
       </div>
