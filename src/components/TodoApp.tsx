@@ -2,6 +2,7 @@ import React from 'react';
 import Button from './UI/Button';
 import useApiData from '../hooks/useApiData';
 import { ApiResponseType } from '../types/types';
+import AddTodoForm from './AddTodoForm';
 
 const url = import.meta.env.VITE_dummy_todos_url as string;
 
@@ -25,14 +26,7 @@ const TodoApp = () => {
         </p>
       )}
       <h1 className='text-2xl font-semibold '>TodoApp</h1>
-      <form className='flex gap-2 mt-5'>
-        <input
-          type='text'
-          placeholder='Enter your todo'
-          className='border border-slate-400 rounded-md px-3 py-1 w-full'
-        />
-        <button className='bg-slate-500 text-white px-3 py-1 rounded-md'>Add</button>
-      </form>
+      <AddTodoForm onAddTodo={() => {}} />
 
       <div className='mt-5'>
         <ul>
