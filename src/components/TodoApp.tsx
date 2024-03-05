@@ -6,10 +6,10 @@ import SingleTodo from './SingleTodo';
 import axios from 'axios';
 import { apiData } from '../helpers/helpers';
 import Loading from './UI/Loading';
+import bgImage from '../assets/bg.jpg';
 
-const url = import.meta.env.VITE_dummy_todos_url as string;
+const url: string = import.meta.env.VITE_dummy_todos_url || 'https://dummyjson.com/todos';
 
-console.log('url ===', url);
 const TodoApp = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -83,28 +83,32 @@ const TodoApp = () => {
   };
 
   return (
-    <div className='border border-slate-400 rounded-md px-5 py-3 w-[500px] mx-auto min-h-96'>
-      {error && (
-        <p className='text-red-500 bg-red-50 border border-red-300 py-3 rounded-md text-center '>
-          {error?.message}
-        </p>
-      )}
-      <h1 className='text-2xl font-semibold '>TodoApp</h1>
-      <AddTodoForm onAddTodo={handleAddTodo} />
+    <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  w-[500px] mx-auto min-h-96'>
+      <img className='h-52 w-full object-cover object-bottom' src={bgImage} alt='Todo header' />
+      <div className='px-5 py-3'>
+        {error && (
+          <p className='text-red-500 bg-red-50 border border-red-300 py-3 rounded-md text-center '>
+            {error?.message}
+          </p>
+        )}
+        <h1 className='text-2xl font-semibold '>TodoApp</h1>
+        <AddTodoForm onAddTodo={handleAddTodo} />
 
-      <Loading show={loading} />
-
-      <div className='mt-5'>
-        <ul>
-          {todos.map((tItem) => (
-            <SingleTodo
-              key={tItem.id}
-              item={tItem}
-              onComplete={() => handleToggleTodo(tItem.id)}
-              onDelete={() => handleDeleteTodo(tItem.id)}
-            />
-          ))}
-        </ul>
+        <div className='relative'>
+          <Loading show={loading} />
+          <div className='mt-5'>
+            <ul>
+              {todos.map((tItem) => (
+                <SingleTodo
+                  key={tItem.id}
+                  item={tItem}
+                  onComplete={() => handleToggleTodo(tItem.id)}
+                  onDelete={() => handleDeleteTodo(tItem.id)}
+                />
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
