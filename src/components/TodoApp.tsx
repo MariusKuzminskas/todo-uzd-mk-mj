@@ -1,8 +1,7 @@
-import React from 'react';
-import Button from './UI/Button';
 import useApiData from '../hooks/useApiData';
 import { ApiResponseType } from '../types/types';
 import AddTodoForm from './AddTodoForm';
+import SingleTodo from './SingleTodo';
 
 const url = import.meta.env.VITE_dummy_todos_url as string;
 
@@ -31,22 +30,7 @@ const TodoApp = () => {
       <div className='mt-5'>
         <ul>
           {data?.todos.map((tItem) => (
-            <li
-              key={tItem.id}
-              className='flex gap-2 justify-between items-center border-b border-slate-400 py-2'>
-              <label className='max-w-80 flex gap-2 items-center'>
-                <input
-                  className='h-5 w-5 accent-slate-400 flex-shrink-0'
-                  type='checkbox'
-                  defaultChecked={tItem.completed}
-                />
-                {tItem.todo}
-              </label>
-              <div>
-                <Button>Edit</Button>
-                <Button className='bg-red-400'>Delete</Button>
-              </div>
-            </li>
+            <SingleTodo key={tItem.id} item={tItem} />
           ))}
         </ul>
       </div>
