@@ -4,6 +4,8 @@ import { ApiResponseType, TodoType } from '../types/types';
 import AddTodoForm from './AddTodoForm';
 import SingleTodo from './SingleTodo';
 import axios from 'axios';
+import { apiData } from '../helpers/helpers';
+import Loading from './UI/Loading';
 
 const url = import.meta.env.VITE_dummy_todos_url as string;
 
@@ -31,25 +33,37 @@ const TodoApp = () => {
 
   // console.table(todos);
 
-  const handleAddTodo = (newTodo: string) => {
+  const handleAddTodo = async (newTodo: string) => {
     setError(null);
+    setLoading(true);
     console.log('newTodo ===', newTodo);
-    axios
-      .post(url + '/add', { todo: newTodo, completed: false, userId: 11 })
-      .then((response) => {
-        console.log('response ===', response.data);
-        setTodos((prev) => [response.data, ...prev]);
-      })
-      .catch((error) => {
-        console.log('error handleAddTodo ===', error);
-        console.log('error.response ===', error.response.data.message);
-        setError(new Error(error.response.data.message));
-      });
+    const [result, error] = await apiData<TodoType>(url + '/add', 'post', {
+      todo: newTodo,
+      completed: false,
+      userId: 11,
+    });
+    if (error) {
+      setError(error);
+      setLoading(false);
+      return;
+    }
+    setTodos((prev) => [result, ...prev]);
+    setLoading(false);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const handleDeleteTodo = async (id: number) => {
+    setError(null);
+    setLoading(true);
+    const [result, error] = await apiData<TodoType>(`${url}/${id}`, 'delete');
+    if (error) {
+      console.log('error ===', error);
+      setError(error);
+      setLoading(false);
+      return;
+    }
+    setTodos((prev) => prev.filter((item) => item.id !== id));
+    setLoading(false);
+  };
 
   return (
     <div className='border border-slate-400 rounded-md px-5 py-3 w-[500px] mx-auto min-h-96'>
@@ -61,10 +75,12 @@ const TodoApp = () => {
       <h1 className='text-2xl font-semibold '>TodoApp</h1>
       <AddTodoForm onAddTodo={handleAddTodo} />
 
+      <Loading show={loading} />
+
       <div className='mt-5'>
         <ul>
           {todos.map((tItem) => (
-            <SingleTodo key={tItem.id} item={tItem} />
+            <SingleTodo key={tItem.id} item={tItem} onDelete={() => handleDeleteTodo(tItem.id)} />
           ))}
         </ul>
       </div>

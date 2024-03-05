@@ -4,9 +4,10 @@ import { TodoType } from '../types/types';
 
 type SingleTodoProps = {
   item: TodoType;
+  onDelete: () => void;
 };
 
-const SingleTodo = ({ item }: SingleTodoProps) => {
+const SingleTodo = ({ item, onDelete }: SingleTodoProps) => {
   return (
     <li className='flex gap-2 justify-between items-center border-b border-slate-400 py-2'>
       <label className='max-w-80 flex gap-2 items-center'>
@@ -19,7 +20,9 @@ const SingleTodo = ({ item }: SingleTodoProps) => {
       </label>
       <div>
         <Button>Edit</Button>
-        <Button className='bg-red-400'>Delete</Button>
+        <Button onClick={onDelete} className='bg-red-400'>
+          Delete
+        </Button>
       </div>
     </li>
   );
