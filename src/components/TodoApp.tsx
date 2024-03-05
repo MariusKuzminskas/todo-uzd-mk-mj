@@ -80,7 +80,7 @@ const TodoApp = () => {
   };
 
   return (
-    <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  w-[500px] mx-auto min-h-96'>
+    <div className='border overflow-hidden bg-white shadow-md border-slate-400 rounded-md  md:w-[500px] mx-auto min-h-96'>
       <TodoHeader todos={todos} />
       <div className='px-5 py-3'>
         {error && (

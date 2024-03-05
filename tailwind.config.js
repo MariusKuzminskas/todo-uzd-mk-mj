@@ -7,6 +7,9 @@ export default {
         center: true,
         padding: '1rem',
       },
+      screens: {
+        xs: '400px',
+      },
     },
   },
   plugins: [],
