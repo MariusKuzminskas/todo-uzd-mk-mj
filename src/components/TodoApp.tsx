@@ -1,17 +1,37 @@
-import useApiData from '../hooks/useApiData';
-import { ApiResponseType } from '../types/types';
+import { useEffect, useState } from 'react';
+
+import { ApiResponseType, TodoType } from '../types/types';
 import AddTodoForm from './AddTodoForm';
 import SingleTodo from './SingleTodo';
+import axios from 'axios';
 
 const url = import.meta.env.VITE_dummy_todos_url as string;
 
 console.log('url ===', url);
 const TodoApp = () => {
-  const { data, setData, error, loading } = useApiData<ApiResponseType>(url + '?limit=10');
+  const [todos, setTodos] = useState<TodoType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
-  console.table(data?.todos);
+  useEffect(() => {
+    const fetchTodos = async (from: string) => {
+      try {
+        setLoading(true);
+        const response = await axios.get<ApiResponseType>(from);
+        setTodos(response.data.todos);
+        setLoading(false);
+      } catch (error) {
+        setError(error as Error);
+        setLoading(false);
+      }
+    };
 
-  error && console.error(error);
+    fetchTodos(url + '?limit=10');
+  }, []);
+
+  console.table(todos);
+
+  const handleAddTodo = (newTodo: string) => {};
 
   if (loading) {
     return <div>Loading...</div>;
@@ -29,7 +49,7 @@ const TodoApp = () => {
 
       <div className='mt-5'>
         <ul>
-          {data?.todos.map((tItem) => (
+          {todos.map((tItem) => (
             <SingleTodo key={tItem.id} item={tItem} />
           ))}
         </ul>

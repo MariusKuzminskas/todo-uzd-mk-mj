@@ -11,7 +11,7 @@ export default function useApiData<T>(url: string) {
     const fetchData = async () => {
       try {
         const response = await axios.get(url);
-        setData(response.data);
+        setData(response.data.posts) as T;
       } catch (error) {
         setError(error as Error | string | unknown);
       } finally {
