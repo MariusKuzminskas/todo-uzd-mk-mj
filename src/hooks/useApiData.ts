@@ -13,7 +13,7 @@ export default function useApiData<T>(url: string) {
         const response = await axios.get(url);
         setData(response.data);
       } catch (error) {
-        setError(error);
+        setError(error as Error | string | unknown);
       } finally {
         setLoading(false);
       }
@@ -22,5 +22,12 @@ export default function useApiData<T>(url: string) {
     fetchData();
   }, [url]);
 
-  return { data, setData, error, loading };
+  type ReturnType = {
+    data: T | null;
+    setData: React.Dispatch<React.SetStateAction<T | null>>;
+    error: Error | null;
+    loading: boolean;
+  };
+
+  return { data, setData, error, loading } as ReturnType;
 }

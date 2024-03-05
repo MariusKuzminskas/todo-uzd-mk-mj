@@ -4,11 +4,14 @@ import useApiData from '../hooks/useApiData';
 import { ApiResponseType } from '../types/types';
 
 const url = import.meta.env.VITE_dummy_todos_url as string;
+
 console.log('url ===', url);
 const TodoApp = () => {
-  const { data, setData, error, loading } = useApiData<ApiResponseType>(url);
+  const { data, setData, error, loading } = useApiData<ApiResponseType>(url + '?limit=10');
 
-  console.log('data ===', data);
+  console.table(data?.todos);
+
+  error && console.error(error);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -16,6 +19,11 @@ const TodoApp = () => {
 
   return (
     <div className='border border-slate-400 rounded-md px-5 py-3 w-[500px] mx-auto min-h-96'>
+      {error && (
+        <p className='text-red-500 bg-red-50 border border-red-300 py-3 rounded-md text-center '>
+          {error?.message}
+        </p>
+      )}
       <h1 className='text-2xl font-semibold '>TodoApp</h1>
       <form className='flex gap-2 mt-5'>
         <input
@@ -31,28 +39,21 @@ const TodoApp = () => {
           {data?.todos.map((tItem) => (
             <li
               key={tItem.id}
-              className='flex justify-between items-center border-b border-slate-400 py-2'>
-              <p>{tItem.todo}</p>
+              className='flex gap-2 justify-between items-center border-b border-slate-400 py-2'>
+              <label className='max-w-80 flex gap-2 items-center'>
+                <input
+                  className='h-5 w-5 accent-slate-400 flex-shrink-0'
+                  type='checkbox'
+                  defaultChecked={tItem.completed}
+                />
+                {tItem.todo}
+              </label>
               <div>
                 <Button>Edit</Button>
                 <Button className='bg-red-400'>Delete</Button>
               </div>
             </li>
           ))}
-          <li className='flex justify-between items-center border-b border-slate-400 py-2'>
-            <p>Todo 2</p>
-            <div>
-              <button className='bg-slate-500 text-white px-3 py-1 rounded-md'>Edit</button>
-              <button className='bg-slate-500 text-white px-3 py-1 rounded-md'>Delete</button>
-            </div>
-          </li>
-          <li className='flex justify-between items-center border-b border-slate-400 py-2'>
-            <p>Todo 3</p>
-            <div>
-              <button className='bg-slate-500 text-white px-3 py-1 rounded-md'>Edit</button>
-              <button className='bg-slate-500 text-white px-3 py-1 rounded-md'>Delete</button>
-            </div>
-          </li>
         </ul>
       </div>
     </div>
