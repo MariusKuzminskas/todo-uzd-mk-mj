@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+type TodoFiltersProps = {
+  setStatus: React.Dispatch<React.SetStateAction<string>>;
+  status: string;
+};
 
-const TodoFilters = () => {
-  const [status, setStatus] = useState('all');
+const TodoFilters = ({ status, setStatus }: TodoFiltersProps) => {
   console.log('status ===', status);
 
   return (

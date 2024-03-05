@@ -15,6 +15,7 @@ const TodoApp = () => {
   const [todos, setTodos] = useState<TodoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     const fetchTodos = async (from: string) => {
@@ -81,6 +82,23 @@ const TodoApp = () => {
     setLoading(false);
   };
 
+  let filteredTodos = todos;
+  switch (statusFilter) {
+    case 'all':
+      filteredTodos = todos;
+      break;
+    case 'done':
+      filteredTodos = todos.filter((item) => item.completed);
+      break;
+    case 'notDone':
+      filteredTodos = todos.filter((item) => !item.completed);
+      break;
+    default:
+      filteredTodos = todos;
+  }
+
+  console.log('filteredTodos ===', filteredTodos);
+
   return (
     <Wrap>
       <TodoHeader todos={todos} />
@@ -93,12 +111,12 @@ const TodoApp = () => {
         <h1 className='text-2xl font-semibold '>TodoApp</h1>
         <AddTodoForm onAddTodo={handleAddTodo} />
 
-        <TodoFilters />
+        <TodoFilters status={statusFilter} setStatus={setStatusFilter} />
         <div className='relative'>
           <Loading show={loading} />
 
           <ul className='mt-5'>
-            {todos.map((tItem) => (
+            {filteredTodos.map((tItem) => (
               <SingleTodo
                 key={tItem.id}
                 item={tItem}
