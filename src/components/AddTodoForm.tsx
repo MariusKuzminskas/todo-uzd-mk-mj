@@ -16,6 +16,7 @@ const AddTodoForm = ({ onAddTodo }: AddTodoFormProps) => {
       return;
     }
     onAddTodo(newTodoVal);
+    setNewTodoVal('');
   };
 
   const validateTodo = (todo: string) => {
